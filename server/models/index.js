@@ -22,16 +22,22 @@ const sequelize = new Sequelize(
   }
 );
 
-// Import models
-const User = require('./User');
-const Company = require('./Company');
-const Wallet = require('./Wallet');
-const WalletTransaction = require('./WalletTransaction');
-const Flight = require('./Flight');
-const Booking = require('./Booking');
-const Passenger = require('./Passenger');
-const Airline = require('./Airline');
-const AirlineApi = require('./AirlineApi');
+// Import and initialize models
+const User = require('./User')(sequelize);
+const Company = require('./Company')(sequelize);
+const Wallet = require('./Wallet')(sequelize);
+const WalletTransaction = require('./WalletTransaction')(sequelize);
+const Flight = require('./Flight')(sequelize);
+const Booking = require('./Booking')(sequelize);
+const Passenger = require('./Passenger')(sequelize);
+const Airline = require('./Airline')(sequelize);
+const AirlineApi = require('./AirlineApi')(sequelize);
+const Notification = require('./Notification')(sequelize);
+const AnalyticsEvent = require('./AnalyticsEvent')(sequelize);
+const Report = require('./Report')(sequelize);
+const Agent = require('./Agent')(sequelize);
+const Commission = require('./Commission')(sequelize);
+const CommissionPayout = require('./CommissionPayout')(sequelize);
 
 // Define associations
 const defineAssociations = () => {
@@ -66,6 +72,41 @@ const defineAssociations = () => {
 
   Airline.hasMany(AirlineApi, { foreignKey: 'airlineId', as: 'apis' });
   AirlineApi.belongsTo(Airline, { foreignKey: 'airlineId', as: 'airline' });
+
+  // Notification associations
+  User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
+  Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+  // Analytics associations
+  User.hasMany(AnalyticsEvent, { foreignKey: 'userId', as: 'events' });
+  AnalyticsEvent.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+  Company.hasMany(AnalyticsEvent, { foreignKey: 'companyId', as: 'events' });
+  AnalyticsEvent.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
+
+  // Report associations
+  User.hasMany(Report, { foreignKey: 'userId', as: 'reports' });
+  Report.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+  Company.hasMany(Report, { foreignKey: 'companyId', as: 'reports' });
+  Report.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
+
+  // Agent associations
+  User.hasOne(Agent, { foreignKey: 'userId', as: 'agent' });
+  Agent.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+  Agent.hasMany(Commission, { foreignKey: 'agentId', as: 'commissions' });
+  Commission.belongsTo(Agent, { foreignKey: 'agentId', as: 'agent' });
+
+  Agent.hasMany(CommissionPayout, { foreignKey: 'agentId', as: 'payouts' });
+  CommissionPayout.belongsTo(Agent, { foreignKey: 'agentId', as: 'agent' });
+
+  // Commission associations
+  Booking.hasMany(Commission, { foreignKey: 'bookingId', as: 'commissions' });
+  Commission.belongsTo(Booking, { foreignKey: 'bookingId', as: 'booking' });
+
+  CommissionPayout.hasMany(Commission, { foreignKey: 'payoutId', as: 'commissions' });
+  Commission.belongsTo(CommissionPayout, { foreignKey: 'payoutId', as: 'payout' });
 };
 
 // Initialize associations
@@ -81,5 +122,11 @@ module.exports = {
   Booking,
   Passenger,
   Airline,
-  AirlineApi
+  AirlineApi,
+  Notification,
+  AnalyticsEvent,
+  Report,
+  Agent,
+  Commission,
+  CommissionPayout
 };

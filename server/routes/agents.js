@@ -1,12 +1,12 @@
 const express = require('express');
 const { body, param, query, validationResult } = require('express-validator');
 const agentService = require('../services/agentService');
-const { authenticateToken, authorizeRoles } = require('../middleware/auth');
+const { auth, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Apply authentication to all routes
-router.use(authenticateToken);
+router.use(auth);
 
 // Agent management routes
 router.post('/register',
@@ -53,7 +53,7 @@ router.post('/register',
 );
 
 router.get('/:agentId',
-  authorizeRoles(['admin', 'company_admin', 'agent', 'super_agent']),
+  requireRole(['admin', 'company_admin', 'agent', 'super_agent']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required')
   ],
@@ -86,7 +86,7 @@ router.get('/:agentId',
 );
 
 router.put('/:agentId',
-  authorizeRoles(['admin', 'company_admin', 'agent', 'super_agent']),
+  requireRole(['admin', 'company_admin', 'agent', 'super_agent']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required'),
     body('businessName').optional().isString().withMessage('Business name must be a string'),
@@ -127,7 +127,7 @@ router.put('/:agentId',
 );
 
 router.post('/:agentId/approve',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required')
   ],
@@ -161,7 +161,7 @@ router.post('/:agentId/approve',
 
 // Commission management routes
 router.post('/:agentId/commissions/calculate',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required'),
     body('bookingId').isUUID().withMessage('Valid booking ID is required'),
@@ -200,7 +200,7 @@ router.post('/:agentId/commissions/calculate',
 );
 
 router.post('/commissions/:commissionId/approve',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('commissionId').isUUID().withMessage('Valid commission ID is required')
   ],
@@ -233,7 +233,7 @@ router.post('/commissions/:commissionId/approve',
 );
 
 router.get('/:agentId/commissions',
-  authorizeRoles(['admin', 'company_admin', 'agent', 'super_agent']),
+  requireRole(['admin', 'company_admin', 'agent', 'super_agent']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required'),
     query('status').optional().isIn(['pending', 'approved', 'paid', 'cancelled', 'disputed']).withMessage('Invalid status'),
@@ -282,7 +282,7 @@ router.get('/:agentId/commissions',
 
 // Payout management routes
 router.post('/:agentId/payouts',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required'),
     body('payoutPeriod').matches(/^\d{4}-\d{2}$/).withMessage('Payout period must be in YYYY-MM format')
@@ -316,7 +316,7 @@ router.post('/:agentId/payouts',
 );
 
 router.post('/payouts/:payoutId/process',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('payoutId').isUUID().withMessage('Valid payout ID is required')
   ],
@@ -350,7 +350,7 @@ router.post('/payouts/:payoutId/process',
 
 // Performance analytics routes
 router.get('/:agentId/performance',
-  authorizeRoles(['admin', 'company_admin', 'agent', 'super_agent']),
+  requireRole(['admin', 'company_admin', 'agent', 'super_agent']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required'),
     query('dateRange').optional().isIn(['week', 'month', 'quarter', 'year']).withMessage('Invalid date range')
@@ -388,7 +388,7 @@ router.get('/:agentId/performance',
 
 // Agent dashboard routes
 router.get('/:agentId/dashboard',
-  authorizeRoles(['admin', 'company_admin', 'agent', 'super_agent']),
+  requireRole(['admin', 'company_admin', 'agent', 'super_agent']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required')
   ],
@@ -438,7 +438,7 @@ router.get('/:agentId/dashboard',
 
 // Agent hierarchy routes
 router.get('/:agentId/sub-agents',
-  authorizeRoles(['admin', 'company_admin', 'super_agent']),
+  requireRole(['admin', 'company_admin', 'super_agent']),
   [
     param('agentId').isUUID().withMessage('Valid agent ID is required')
   ],
@@ -478,7 +478,7 @@ router.get('/:agentId/sub-agents',
 
 // Agent search and listing routes
 router.get('/',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     query('status').optional().isIn(['active', 'inactive', 'suspended', 'pending_approval']).withMessage('Invalid status'),
     query('agentType').optional().isIn(['individual', 'agency', 'corporate', 'super_agent']).withMessage('Invalid agent type'),

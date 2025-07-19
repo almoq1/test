@@ -1,7 +1,7 @@
 const express = require('express');
 const { query, validationResult } = require('express-validator');
 const { Flight, Airline, AirlineApi } = require('../models');
-const { auth } = require('../middleware/auth');
+const { auth, requireRole } = require('../middleware/auth');
 const airlineApiService = require('../services/airlineApiService');
 
 const router = express.Router();

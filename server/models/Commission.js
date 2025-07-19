@@ -168,7 +168,7 @@ module.exports = (sequelize) => {
     return this.status === 'approved';
   };
 
-  Commission.prototype.isPaid = function() {
+  Commission.prototype.isCommissionPaid = function() {
     return this.status === 'paid' && this.isPaid;
   };
 

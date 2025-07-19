@@ -1,16 +1,16 @@
 const express = require('express');
 const { body, param, query, validationResult } = require('express-validator');
 const enterpriseService = require('../services/enterpriseService');
-const { authenticateToken, authorizeRoles } = require('../middleware/auth');
+const { auth, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Apply authentication to all routes
-router.use(authenticateToken);
+router.use(auth);
 
 // Multi-tenant management routes
 router.post('/companies', 
-  authorizeRoles(['admin']),
+  requireRole(['admin']),
   [
     body('name').notEmpty().withMessage('Company name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
@@ -48,7 +48,7 @@ router.post('/companies',
 );
 
 router.get('/companies/:companyId',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required')
   ],
@@ -81,7 +81,7 @@ router.get('/companies/:companyId',
 );
 
 router.put('/companies/:companyId',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('name').optional().notEmpty().withMessage('Company name cannot be empty'),
@@ -121,7 +121,7 @@ router.put('/companies/:companyId',
 
 // Enterprise analytics routes
 router.get('/analytics/:companyId',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     query('dateRange').optional().isIn(['week', 'month', 'quarter', 'year']).withMessage('Invalid date range')
@@ -159,7 +159,7 @@ router.get('/analytics/:companyId',
 
 // Enterprise integrations routes
 router.post('/integrations/:companyId/erp',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('apiUrl').isURL().withMessage('Valid API URL is required'),
@@ -196,7 +196,7 @@ router.post('/integrations/:companyId/erp',
 );
 
 router.post('/integrations/:companyId/crm',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('apiUrl').isURL().withMessage('Valid API URL is required'),
@@ -233,7 +233,7 @@ router.post('/integrations/:companyId/crm',
 );
 
 router.post('/integrations/:companyId/accounting',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('apiUrl').isURL().withMessage('Valid API URL is required'),
@@ -271,7 +271,7 @@ router.post('/integrations/:companyId/accounting',
 
 // Bulk operations routes
 router.post('/bulk/users/:companyId/import',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('users').isArray({ min: 1 }).withMessage('Users array is required with at least one user'),
@@ -310,7 +310,7 @@ router.post('/bulk/users/:companyId/import',
 );
 
 router.get('/bulk/bookings/:companyId/export',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     query('startDate').optional().isISO8601().withMessage('Valid start date is required'),
@@ -357,7 +357,7 @@ router.get('/bulk/bookings/:companyId/export',
 
 // Business settings routes
 router.put('/settings/:companyId/booking-limits',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('daily').optional().isInt({ min: 1 }).withMessage('Daily limit must be a positive integer'),
@@ -393,7 +393,7 @@ router.put('/settings/:companyId/booking-limits',
 );
 
 router.put('/settings/:companyId/payment',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('autoRecharge').optional().isBoolean().withMessage('Auto recharge must be a boolean'),
@@ -429,7 +429,7 @@ router.put('/settings/:companyId/payment',
 );
 
 router.put('/settings/:companyId/notifications',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     body('email').optional().isBoolean().withMessage('Email setting must be a boolean'),
@@ -466,7 +466,7 @@ router.put('/settings/:companyId/notifications',
 
 // Enterprise reporting routes
 router.get('/reports/:companyId/performance',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     query('startDate').isISO8601().withMessage('Valid start date is required'),
@@ -519,7 +519,7 @@ router.get('/reports/:companyId/performance',
 
 // Enterprise dashboard routes
 router.get('/dashboard/:companyId',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required')
   ],
@@ -553,7 +553,7 @@ router.get('/dashboard/:companyId',
 
 // Enterprise API management routes
 router.post('/api-keys/:companyId/regenerate',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required')
   ],
@@ -587,7 +587,7 @@ router.post('/api-keys/:companyId/regenerate',
 
 // Enterprise audit logs
 router.get('/audit-logs/:companyId',
-  authorizeRoles(['admin', 'company_admin']),
+  requireRole(['admin', 'company_admin']),
   [
     param('companyId').isUUID().withMessage('Valid company ID is required'),
     query('startDate').optional().isISO8601().withMessage('Valid start date is required'),

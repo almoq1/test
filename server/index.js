@@ -96,7 +96,30 @@ const startServer = async () => {
     
     // Sync database (in development)
     if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: true });
+      // Import all models
+      const { 
+        Company, User, Wallet, WalletTransaction, Flight, Booking, Passenger, 
+        Airline, AirlineApi, Notification, AnalyticsEvent, Report, Agent, 
+        Commission, CommissionPayout 
+      } = require('./models');
+      
+      // Sync tables in order to avoid foreign key issues
+      await Company.sync({ alter: true });
+      await User.sync({ alter: true });
+      await Airline.sync({ alter: true });
+      await AirlineApi.sync({ alter: true });
+      await Agent.sync({ alter: true });
+      await Flight.sync({ alter: true });
+      await Booking.sync({ alter: true });
+      await CommissionPayout.sync({ alter: true });
+      await Commission.sync({ alter: true });
+      await Wallet.sync({ alter: true });
+      await WalletTransaction.sync({ alter: true });
+      await Passenger.sync({ alter: true });
+      await Notification.sync({ alter: true });
+      await AnalyticsEvent.sync({ alter: true });
+      await Report.sync({ alter: true });
+      
       console.log('✅ Database synced successfully.');
     }
     
