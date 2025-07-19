@@ -28,6 +28,14 @@ module.exports = (sequelize) => {
         key: 'id'
       }
     },
+    agentId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'agents',
+        key: 'id'
+      }
+    },
     flightId: {
       type: DataTypes.UUID,
       allowNull: false,
