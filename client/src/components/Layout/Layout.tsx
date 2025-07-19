@@ -29,9 +29,11 @@ import {
   AdminPanelSettings,
   Person,
   Logout,
-  Notifications
+  Notifications,
+  Assessment
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
+import MobileBottomNavigation from '../Mobile/MobileBottomNavigation';
 
 const drawerWidth = 240;
 
@@ -202,11 +204,15 @@ const Layout: React.FC = () => {
           flexGrow: 1,
           p: 3,
           width: { md: `calc(100% - ${drawerWidth}px)` },
-          mt: 8
+          mt: 8,
+          pb: isMobile ? 8 : 3, // Add bottom padding for mobile navigation
         }}
       >
         <Outlet />
       </Box>
+
+      {/* Mobile Bottom Navigation */}
+      {isMobile && <MobileBottomNavigation />}
 
       <Menu
         anchorEl={anchorEl}
