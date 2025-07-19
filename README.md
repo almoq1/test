@@ -1,352 +1,425 @@
-# B2B Ticket Booking Portal
+# 🛫 B2B Flight Booking System - Complete Edition
 
-A comprehensive B2B (Business-to-Business) ticket booking portal with integrated wallet functionality and airline API support. Built with Node.js, Express, PostgreSQL, React, and TypeScript.
+A comprehensive **Business-to-Business (B2B) Flight Booking Platform** with advanced features including agent management, commission systems, enterprise analytics, and AI-powered automation.
 
-## 🚀 Features
+## 🎯 **System Overview**
 
-### Core Features
-- **Multi-tenant B2B Platform**: Support for multiple companies with role-based access control
-- **Wallet System**: Integrated wallet for managing funds and transactions
-- **Airline API Integration**: Support for multiple airline APIs (Amadeus, Sabre, Travelport, etc.)
-- **Flight Search & Booking**: Real-time flight search with booking capabilities
-- **Bulk Booking**: Support for booking multiple passengers at once
-- **Payment Integration**: Multiple payment methods including wallet, credit card, and invoice
+This platform transforms from a basic flight booking system into a complete **Travel Agency Management Ecosystem** with the following phases:
 
-### User Management
-- **Role-based Access Control**: Admin, Company Admin, Travel Manager, Employee roles
-- **Company Management**: Multi-tenant architecture with company-specific settings
-- **User Profiles**: Comprehensive user management with permissions
+- **Phase 1**: Core booking system, authentication, and wallet management
+- **Phase 2**: Analytics and reporting with event tracking
+- **Phase 3**: Machine Learning and AI automation services
+- **Phase 4**: Enterprise features with multi-tenant architecture
+- **Phase 5**: Agent & Commission System with automated payouts
 
-### Booking System
-- **Flight Search**: Advanced search with filters (date, route, airline, cabin class)
-- **Booking Management**: Create, view, and cancel bookings
-- **Passenger Management**: Handle multiple passengers with detailed information
-- **Booking History**: Complete booking history and tracking
+## 🚀 **Key Features**
 
-### Wallet & Payments
-- **Wallet Balance**: Real-time balance tracking
-- **Transaction History**: Detailed transaction logs
-- **Fund Management**: Add, deduct, and transfer funds
-- **Auto-recharge**: Configurable auto-recharge settings
-- **Spending Limits**: Daily and monthly spending limits
+### ✈️ **Flight Booking System**
+- Real-time flight search and booking
+- Multi-airline integration
+- Seat selection and meal preferences
+- Booking management and cancellation
+- Payment processing with multiple gateways
 
-### Admin Features
-- **Dashboard Analytics**: Comprehensive analytics and reporting
-- **User Management**: Create, edit, and manage users across companies
-- **Company Management**: Manage B2B clients and their settings
-- **Airline Management**: Configure airline partnerships and APIs
-- **System Monitoring**: Monitor system health and performance
+### 👥 **User Management**
+- Multi-role authentication (Admin, Company Admin, Travel Manager, Employee, Agent)
+- Company-based user organization
+- Role-based access control
+- User profile management
 
-## 🛠️ Technology Stack
+### 💰 **Wallet System**
+- Digital wallet for users and agents
+- Transaction history and tracking
+- Multiple payment methods
+- Auto-recharge and spending limits
+- Commission integration for agents
 
-### Backend
+### 📊 **Analytics & Reporting**
+- Real-time dashboard with key metrics
+- Custom report generation
+- Event tracking and user behavior analysis
+- Predictive analytics and insights
+- Export functionality (PDF, Excel, CSV)
+
+### 🤖 **AI & Machine Learning**
+- Flight price prediction
+- Demand forecasting
+- Personalized recommendations
+- Automated customer support
+- Fraud detection and prevention
+
+### 🏢 **Enterprise Features**
+- Multi-tenant architecture
+- Company-specific dashboards
+- Bulk operations (user import/export)
+- Advanced business settings
+- ERP/CRM/Accounting integrations
+- Audit logging and compliance
+
+### 👨‍💼 **Agent & Commission System**
+- Multi-tier agent hierarchy (Individual → Agency → Corporate → Super Agent)
+- Automated commission calculation (5-12% tiered structure)
+- Performance bonuses and incentives
+- Automated payout processing
+- Real-time performance tracking
+- Territory and specialization management
+
+## 🏗️ **Architecture**
+
+### **Backend Stack**
 - **Node.js** with Express.js
-- **PostgreSQL** with Sequelize ORM
+- **PostgreSQL** database with Sequelize ORM
+- **Redis** for caching and session management
 - **JWT** for authentication
-- **bcryptjs** for password hashing
-- **Express Validator** for input validation
-- **Axios** for HTTP requests
-- **Node-cron** for scheduled tasks
+- **Socket.io** for real-time features
+- **Multer** for file uploads
+- **Nodemailer** for email notifications
 
-### Frontend
-- **React 18** with TypeScript
+### **Frontend Stack**
+- **React.js** with TypeScript
 - **Material-UI** for UI components
+- **Redux Toolkit** for state management
 - **React Router** for navigation
-- **React Query** for state management
-- **React Hook Form** for form handling
 - **Recharts** for data visualization
-- **Framer Motion** for animations
+- **Axios** for API communication
+- **PWA** capabilities with offline support
 
-### DevOps & Tools
-- **Docker** support
-- **Environment configuration**
-- **API documentation**
-- **Error handling and logging**
+### **AI/ML Stack**
+- **TensorFlow.js** for client-side ML
+- **Python** with scikit-learn for server-side ML
+- **OpenAI API** for natural language processing
+- **Recommendation algorithms**
+- **Predictive analytics models**
 
-## 📋 Prerequisites
+## 📁 **Project Structure**
 
-Before running this application, make sure you have the following installed:
-
-- **Node.js** (v16 or higher)
-- **PostgreSQL** (v12 or higher)
-- **npm** or **yarn**
-- **Git**
-
-## 🚀 Quick Start
-
-### 1. Clone the Repository
-
-```bash
-git clone <repository-url>
-cd b2b-ticket-booking-portal
+```
+├── server/
+│   ├── models/                 # Database models
+│   │   ├── User.js
+│   │   ├── Company.js
+│   │   ├── Flight.js
+│   │   ├── Booking.js
+│   │   ├── Wallet.js
+│   │   ├── Agent.js
+│   │   ├── Commission.js
+│   │   └── CommissionPayout.js
+│   ├── routes/                 # API routes
+│   │   ├── auth.js
+│   │   ├── flights.js
+│   │   ├── bookings.js
+│   │   ├── wallet.js
+│   │   ├── analytics.js
+│   │   ├── enterprise.js
+│   │   └── agents.js
+│   ├── services/               # Business logic
+│   │   ├── flightService.js
+│   │   ├── bookingService.js
+│   │   ├── walletService.js
+│   │   ├── analyticsService.js
+│   │   ├── enterpriseService.js
+│   │   └── agentService.js
+│   ├── middleware/             # Custom middleware
+│   │   ├── auth.js
+│   │   ├── validation.js
+│   │   └── errorHandler.js
+│   └── utils/                  # Utility functions
+├── client/
+│   ├── src/
+│   │   ├── components/         # Reusable components
+│   │   ├── pages/              # Page components
+│   │   │   ├── Dashboard/
+│   │   │   ├── Flights/
+│   │   │   ├── Bookings/
+│   │   │   ├── Wallet/
+│   │   │   ├── Analytics/
+│   │   │   ├── Enterprise/
+│   │   │   └── Agent/
+│   │   ├── contexts/           # React contexts
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── utils/              # Utility functions
+│   │   └── types/              # TypeScript types
+│   └── public/                 # Static assets
+├── docs/                       # Documentation
+│   ├── PHASE1_IMPLEMENTATION.md
+│   ├── PHASE2_IMPLEMENTATION.md
+│   ├── PHASE3_IMPLEMENTATION.md
+│   ├── PHASE4_IMPLEMENTATION.md
+│   └── PHASE5_IMPLEMENTATION.md
+└── scripts/                    # Build and deployment scripts
 ```
 
-### 2. Install Dependencies
+## 🚀 **Quick Start**
+
+### **Prerequisites**
+- Node.js (v16 or higher)
+- PostgreSQL (v12 or higher)
+- Redis (v6 or higher)
+- npm or yarn
+
+### **Installation**
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd b2b-flight-booking-system
+   ```
+
+2. **Install dependencies**
+   ```bash
+   # Install server dependencies
+   cd server
+   npm install
+
+   # Install client dependencies
+   cd ../client
+   npm install
+   ```
+
+3. **Environment Setup**
+   ```bash
+   # Copy environment files
+   cp .env.example .env
+   
+   # Configure your environment variables
+   # Database, Redis, JWT, API keys, etc.
+   ```
+
+4. **Database Setup**
+   ```bash
+   # Run database migrations
+   npm run migrate
+   
+   # Seed initial data
+   npm run seed
+   ```
+
+5. **Start the application**
+   ```bash
+   # Start server (from server directory)
+   npm run dev
+   
+   # Start client (from client directory)
+   npm start
+   ```
+
+## 🔧 **Configuration**
+
+### **Environment Variables**
 
 ```bash
-# Install root dependencies
-npm install
-
-# Install all dependencies (server + client)
-npm run install:all
-```
-
-### 3. Database Setup
-
-```bash
-# Create PostgreSQL database
-createdb b2b_booking_portal
-
-# Or using psql
-psql -U postgres
-CREATE DATABASE b2b_booking_portal;
-```
-
-### 4. Environment Configuration
-
-```bash
-# Copy environment file
-cp server/.env.example server/.env
-
-# Edit the environment file with your configuration
-nano server/.env
-```
-
-Update the following variables in `server/.env`:
-
-```env
-# Database Configuration
+# Database
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=b2b_booking_portal
-DB_USER=your_postgres_user
-DB_PASSWORD=your_postgres_password
+DB_NAME=b2b_flight_booking
+DB_USER=postgres
+DB_PASSWORD=your_password
 
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
 
-# Airline API Keys (optional for testing)
-AMADEUS_CLIENT_ID=your_amadeus_client_id
-AMADEUS_CLIENT_SECRET=your_amadeus_client_secret
+# JWT
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=24h
+
+# Email
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_email_password
+
+# Payment Gateways
+STRIPE_SECRET_KEY=sk_test_...
+PAYPAL_CLIENT_ID=...
+PAYPAL_CLIENT_SECRET=...
+
+# AI Services
+OPENAI_API_KEY=sk-...
+TENSORFLOW_MODEL_URL=...
+
+# Agent System
+AGENT_COMMISSION_BASE_RATE=5.0
+AGENT_MINIMUM_PAYOUT=100
+AGENT_PAYOUT_FREQUENCY=monthly
 ```
 
-### 5. Database Migration
+## 📊 **API Documentation**
+
+### **Authentication**
+```
+POST   /api/auth/register          # User registration
+POST   /api/auth/login             # User login
+POST   /api/auth/logout            # User logout
+GET    /api/auth/profile           # Get user profile
+PUT    /api/auth/profile           # Update user profile
+```
+
+### **Flights**
+```
+GET    /api/flights                # Search flights
+GET    /api/flights/:id            # Get flight details
+POST   /api/flights                # Create flight (admin)
+PUT    /api/flights/:id            # Update flight (admin)
+DELETE /api/flights/:id            # Delete flight (admin)
+```
+
+### **Bookings**
+```
+GET    /api/bookings               # Get user bookings
+POST   /api/bookings               # Create booking
+GET    /api/bookings/:id           # Get booking details
+PUT    /api/bookings/:id           # Update booking
+DELETE /api/bookings/:id           # Cancel booking
+```
+
+### **Wallet**
+```
+GET    /api/wallet                 # Get wallet balance
+POST   /api/wallet/add-funds       # Add funds
+POST   /api/wallet/withdraw        # Withdraw funds
+GET    /api/wallet/transactions    # Get transaction history
+```
+
+### **Analytics**
+```
+GET    /api/analytics/dashboard    # Get dashboard data
+GET    /api/analytics/reports      # Generate reports
+GET    /api/analytics/events       # Get event data
+POST   /api/analytics/track        # Track custom events
+```
+
+### **Enterprise**
+```
+GET    /api/enterprise/companies   # Get companies
+POST   /api/enterprise/companies   # Create company
+GET    /api/enterprise/analytics   # Enterprise analytics
+POST   /api/enterprise/bulk-import # Bulk user import
+```
+
+### **Agents**
+```
+POST   /api/agents/register        # Register agent
+GET    /api/agents/:id             # Get agent details
+PUT    /api/agents/:id             # Update agent
+POST   /api/agents/:id/approve     # Approve agent
+GET    /api/agents/:id/commissions # Get commissions
+POST   /api/agents/:id/payouts     # Create payout
+```
+
+## 🎨 **User Interface**
+
+### **Dashboard Features**
+- **Real-time Metrics**: Bookings, revenue, user activity
+- **Interactive Charts**: Performance trends and analytics
+- **Quick Actions**: Common tasks and shortcuts
+- **Notifications**: System alerts and updates
+
+### **Flight Booking**
+- **Advanced Search**: Multiple filters and preferences
+- **Real-time Pricing**: Live price updates
+- **Seat Selection**: Interactive seat map
+- **Booking Management**: Easy modifications and cancellations
+
+### **Agent Dashboard**
+- **Performance Tracking**: Commission and booking metrics
+- **Commission Management**: Real-time commission tracking
+- **Payout Monitoring**: Payment status and history
+- **Analytics**: Performance trends and insights
+
+### **Enterprise Features**
+- **Multi-tenant Management**: Company-specific views
+- **Bulk Operations**: User import/export
+- **Advanced Analytics**: Business intelligence
+- **Integration Hub**: ERP/CRM connections
+
+## 🔐 **Security Features**
+
+- **JWT Authentication**: Secure token-based auth
+- **Role-based Access Control**: Granular permissions
+- **Data Encryption**: Sensitive data protection
+- **Rate Limiting**: API abuse prevention
+- **Input Validation**: XSS and injection protection
+- **Audit Logging**: Complete activity tracking
+
+## 📈 **Performance Optimization**
+
+- **Database Indexing**: Optimized queries
+- **Redis Caching**: Fast data access
+- **CDN Integration**: Static asset delivery
+- **Image Optimization**: Compressed media
+- **Code Splitting**: Lazy loading
+- **PWA Support**: Offline capabilities
+
+## 🧪 **Testing**
 
 ```bash
-# Run database migrations
-npm run db:migrate
-
-# Seed initial data (optional)
-npm run db:seed
-```
-
-### 6. Start the Application
-
-```bash
-# Start both server and client in development mode
-npm run dev
-
-# Or start them separately
-npm run server:dev  # Backend on http://localhost:5000
-npm run client:dev  # Frontend on http://localhost:3000
-```
-
-## 📁 Project Structure
-
-```
-b2b-ticket-booking-portal/
-├── server/                 # Backend application
-│   ├── models/            # Database models
-│   ├── routes/            # API routes
-│   ├── middleware/        # Custom middleware
-│   ├── services/          # Business logic services
-│   ├── index.js           # Server entry point
-│   └── package.json
-├── client/                # Frontend application
-│   ├── src/
-│   │   ├── components/    # Reusable components
-│   │   ├── pages/         # Page components
-│   │   ├── contexts/      # React contexts
-│   │   ├── hooks/         # Custom hooks
-│   │   ├── services/      # API services
-│   │   ├── types/         # TypeScript types
-│   │   ├── utils/         # Utility functions
-│   │   ├── App.tsx        # Main app component
-│   │   └── index.tsx      # Entry point
-│   └── package.json
-├── package.json           # Root package.json
-└── README.md
-```
-
-## 🔧 Configuration
-
-### Database Models
-
-The application includes the following main models:
-
-- **User**: User accounts with role-based permissions
-- **Company**: B2B client companies
-- **Wallet**: User wallet for fund management
-- **WalletTransaction**: Transaction history
-- **Flight**: Flight information from airlines
-- **Booking**: Flight bookings
-- **Passenger**: Passenger information
-- **Airline**: Airline partnerships
-- **AirlineApi**: API configurations for airlines
-
-### API Endpoints
-
-#### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/profile` - Get user profile
-- `PUT /api/auth/profile` - Update user profile
-
-#### Flights
-- `GET /api/flights/search` - Search flights
-- `GET /api/flights/:id` - Get flight details
-- `GET /api/flights/airlines/available` - Get available airlines
-
-#### Bookings
-- `POST /api/bookings` - Create booking
-- `GET /api/bookings/my-bookings` - Get user bookings
-- `GET /api/bookings/:id` - Get booking details
-- `POST /api/bookings/:id/cancel` - Cancel booking
-
-#### Wallet
-- `GET /api/wallet/balance` - Get wallet balance
-- `GET /api/wallet/transactions` - Get transaction history
-- `POST /api/wallet/add-funds` - Add funds to wallet
-- `POST /api/wallet/deduct-funds` - Deduct funds from wallet
-
-#### Admin (Admin only)
-- `GET /api/users` - Get all users
-- `GET /api/companies` - Get all companies
-- `GET /api/airlines` - Get all airlines
-
-## 🧪 Testing
-
-```bash
-# Run backend tests
-cd server
+# Run all tests
 npm test
 
-# Run frontend tests
-cd client
-npm test
+# Run specific test suites
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+
+# Generate coverage report
+npm run test:coverage
 ```
 
-## 🐳 Docker Deployment
+## 🚀 **Deployment**
 
-### Using Docker Compose
-
+### **Docker Deployment**
 ```bash
-# Build and start all services
+# Build and run with Docker
 docker-compose up -d
 
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
+# Production build
+docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### Manual Docker Build
+### **Cloud Deployment**
+- **AWS**: EC2, RDS, ElastiCache, S3
+- **Google Cloud**: Compute Engine, Cloud SQL, Redis
+- **Azure**: Virtual Machines, SQL Database, Redis Cache
+- **Heroku**: Easy deployment with add-ons
 
-```bash
-# Build server image
-docker build -t b2b-booking-server ./server
+## 📚 **Documentation**
 
-# Build client image
-docker build -t b2b-booking-client ./client
+- [Phase 1: Core System](docs/PHASE1_IMPLEMENTATION.md)
+- [Phase 2: Analytics](docs/PHASE2_IMPLEMENTATION.md)
+- [Phase 3: AI/ML Services](docs/PHASE3_IMPLEMENTATION.md)
+- [Phase 4: Enterprise Features](docs/PHASE4_IMPLEMENTATION.md)
+- [Phase 5: Agent System](docs/PHASE5_IMPLEMENTATION.md)
+- [API Reference](docs/API_REFERENCE.md)
+- [Deployment Guide](docs/DEPLOYMENT.md)
 
-# Run containers
-docker run -p 5000:5000 b2b-booking-server
-docker run -p 3000:3000 b2b-booking-client
-```
-
-## 📊 Monitoring & Logging
-
-The application includes comprehensive logging and monitoring:
-
-- **Request logging** with Morgan
-- **Error tracking** with detailed error messages
-- **Database query logging** in development
-- **API rate limiting** to prevent abuse
-- **Health check endpoints** for monitoring
-
-## 🔒 Security Features
-
-- **JWT Authentication** with secure token handling
-- **Password hashing** with bcryptjs
-- **Input validation** with express-validator
-- **CORS protection** with configurable origins
-- **Rate limiting** to prevent abuse
-- **Helmet.js** for security headers
-- **SQL injection protection** with Sequelize ORM
-
-## 🚀 Production Deployment
-
-### Environment Variables
-
-Make sure to set the following production environment variables:
-
-```env
-NODE_ENV=production
-JWT_SECRET=your-production-jwt-secret
-DB_HOST=your-production-db-host
-DB_PASSWORD=your-production-db-password
-```
-
-### Performance Optimization
-
-- **Database indexing** for frequently queried fields
-- **API response caching** with Redis (optional)
-- **Static file serving** with compression
-- **CDN integration** for static assets
-
-## 🤝 Contributing
+## 🤝 **Contributing**
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 🆘 **Support**
 
-For support and questions:
+- **Documentation**: Check the docs folder
+- **Issues**: Create an issue on GitHub
+- **Email**: support@b2bflightbooking.com
+- **Discord**: Join our community server
 
-- Create an issue in the GitHub repository
-- Check the documentation in the `/docs` folder
-- Review the API documentation
+## 🎉 **Acknowledgments**
 
-## 🔄 Updates & Maintenance
-
-### Regular Maintenance Tasks
-
-- **Database backups** - Set up automated backups
-- **Security updates** - Keep dependencies updated
-- **Performance monitoring** - Monitor API response times
-- **Error tracking** - Monitor and fix application errors
-
-### Version Updates
-
-```bash
-# Update dependencies
-npm update
-
-# Check for security vulnerabilities
-npm audit
-
-# Fix security issues
-npm audit fix
-```
+- **Material-UI** for the beautiful UI components
+- **Sequelize** for the excellent ORM
+- **Recharts** for the amazing charts
+- **OpenAI** for AI capabilities
+- **All contributors** who made this project possible
 
 ---
 
-**Built with ❤️ for modern B2B travel management**
+**Built with ❤️ for the travel industry**
