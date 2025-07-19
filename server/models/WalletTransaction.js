@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
       }
     },
     type: {
-      type: DataTypes.ENUM('credit', 'debit', 'refund', 'adjustment'),
+      type: DataTypes.ENUM('credit', 'debit', 'refund', 'adjustment', 'commission', 'payout', 'bonus'),
       allowNull: false
     },
     amount: {
@@ -55,6 +55,22 @@ module.exports = (sequelize) => {
       allowNull: true,
       references: {
         model: 'Users',
+        key: 'id'
+      }
+    },
+    commissionId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'commissions',
+        key: 'id'
+      }
+    },
+    payoutId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'commission_payouts',
         key: 'id'
       }
     }

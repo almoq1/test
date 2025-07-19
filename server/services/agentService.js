@@ -1,4 +1,4 @@
-const { Agent, User, Booking, Commission, CommissionPayout, Company } = require('../models');
+const { Agent, User, Booking, Commission, CommissionPayout, Company, Wallet, WalletTransaction } = require('../models');
 const { Op } = require('sequelize');
 const moment = require('moment');
 const crypto = require('crypto');
@@ -19,6 +19,14 @@ class AgentService {
         ...agentData,
         agentCode,
         status: 'pending_approval'
+      });
+
+      // Create wallet for agent
+      await Wallet.create({
+        agentId: agent.id,
+        balance: 0,
+        currency: 'USD',
+        status: 'active'
       });
 
       return {
@@ -182,6 +190,9 @@ class AgentService {
       agent.updatePerformanceMetrics(bookingAmount, commissionAmount);
       await agent.save();
 
+      // Add commission to agent's wallet when approved
+      // This will be handled when commission is approved
+
       return {
         success: true,
         data: commission,
@@ -198,7 +209,15 @@ class AgentService {
 
   async approveCommission(commissionId, approvedBy) {
     try {
-      const commission = await Commission.findByPk(commissionId);
+      const commission = await Commission.findByPk(commissionId, {
+        include: [{
+          model: Agent,
+          include: [{
+            model: Wallet
+          }]
+        }]
+      });
+      
       if (!commission) {
         return {
           success: false,
@@ -209,10 +228,32 @@ class AgentService {
       commission.approve(approvedBy);
       await commission.save();
 
+      // Add commission to agent's wallet
+      const wallet = commission.Agent.Wallet;
+      if (wallet) {
+        await wallet.addFunds(
+          commission.commissionAmount,
+          `Commission approved for booking ${commission.bookingId}`
+        );
+
+        // Create wallet transaction record
+        await WalletTransaction.create({
+          walletId: wallet.id,
+          type: 'commission',
+          amount: commission.commissionAmount,
+          description: `Commission for booking ${commission.bookingId}`,
+          balanceBefore: wallet.balance - parseFloat(commission.commissionAmount),
+          balanceAfter: wallet.balance,
+          status: 'completed',
+          commissionId: commission.id,
+          processedBy: approvedBy
+        });
+      }
+
       return {
         success: true,
         data: commission,
-        message: 'Commission approved successfully'
+        message: 'Commission approved and added to wallet'
       };
     } catch (error) {
       console.error('Agent Service - Approve Commission Error:', error);

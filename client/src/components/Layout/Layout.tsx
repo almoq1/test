@@ -86,6 +86,13 @@ const Layout: React.FC = () => {
       );
     }
 
+    // Add agent dashboard for agents
+    if (user?.role === 'agent' || user?.role === 'super_agent') {
+      baseItems.push(
+        { text: 'Agent Dashboard', icon: <Person />, path: '/agent' }
+      );
+    }
+
     // Add admin items
     if (user?.role === 'admin') {
       baseItems.push(

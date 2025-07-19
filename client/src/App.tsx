@@ -19,6 +19,7 @@ import FlightSearch from './pages/Flights/FlightSearch';
 import Wallet from './pages/Wallet/Wallet';
 import AnalyticsDashboard from './pages/Analytics/AnalyticsDashboard';
 import EnterpriseDashboard from './pages/Enterprise/EnterpriseDashboard';
+import AgentDashboard from './pages/Agent/AgentDashboard';
 import LoadingSpinner from './components/Common/LoadingSpinner';
 
 // Create theme
@@ -108,6 +109,7 @@ const AppContent: React.FC = () => {
           <Route path="wallet" element={<Wallet />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
           <Route path="enterprise" element={<EnterpriseDashboard />} />
+          <Route path="agent" element={<AgentDashboard />} />
           
           {/* Placeholder routes for future implementation */}
           <Route path="bookings" element={
