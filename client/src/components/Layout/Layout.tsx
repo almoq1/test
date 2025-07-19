@@ -79,6 +79,13 @@ const Layout: React.FC = () => {
       );
     }
 
+    // Add enterprise for admin
+    if (user?.role === 'admin') {
+      baseItems.push(
+        { text: 'Enterprise', icon: <Business />, path: '/enterprise' }
+      );
+    }
+
     // Add admin items
     if (user?.role === 'admin') {
       baseItems.push(

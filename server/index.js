@@ -18,6 +18,7 @@ const flightRoutes = require('./routes/flights');
 const bookingRoutes = require('./routes/bookings');
 const airlineRoutes = require('./routes/airlines');
 const analyticsRoutes = require('./routes/analytics');
+const enterpriseRoutes = require('./routes/enterprise');
 
 // Import database connection
 const { sequelize } = require('./models');
@@ -68,6 +69,7 @@ app.use('/api/flights', flightRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/airlines', airlineRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/enterprise', enterpriseRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
