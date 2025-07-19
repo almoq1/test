@@ -70,6 +70,13 @@ const Layout: React.FC = () => {
       { text: 'Wallet', icon: <AccountBalanceWallet />, path: '/wallet' },
     ];
 
+    // Add analytics for admin and company admin
+    if (user?.role === 'admin' || user?.role === 'company_admin') {
+      baseItems.push(
+        { text: 'Analytics', icon: <Assessment />, path: '/analytics' }
+      );
+    }
+
     // Add admin items
     if (user?.role === 'admin') {
       baseItems.push(

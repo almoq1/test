@@ -17,6 +17,7 @@ import Register from './pages/Auth/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import FlightSearch from './pages/Flights/FlightSearch';
 import Wallet from './pages/Wallet/Wallet';
+import AnalyticsDashboard from './pages/Analytics/AnalyticsDashboard';
 import LoadingSpinner from './components/Common/LoadingSpinner';
 
 // Create theme
@@ -104,6 +105,7 @@ const AppContent: React.FC = () => {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="flights/search" element={<FlightSearch />} />
           <Route path="wallet" element={<Wallet />} />
+          <Route path="analytics" element={<AnalyticsDashboard />} />
           
           {/* Placeholder routes for future implementation */}
           <Route path="bookings" element={
