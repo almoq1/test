@@ -55,6 +55,73 @@ module.exports = (sequelize) => {
     permissions: {
       type: DataTypes.JSONB,
       defaultValue: {}
+    },
+    // MFA and Security fields
+    mfaEnabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    mfaSecret: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    mfaBackupCodes: {
+      type: DataTypes.JSONB,
+      defaultValue: []
+    },
+    isLocked: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    loginAttempts: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    lockoutUntil: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    // Notification preferences
+    notificationPreferences: {
+      type: DataTypes.JSONB,
+      defaultValue: {
+        email: true,
+        sms: false,
+        push: false,
+        realtime: true
+      }
+    },
+    // Device and location tracking
+    knownDevices: {
+      type: DataTypes.JSONB,
+      defaultValue: []
+    },
+    lastKnownLocation: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    // Language and localization
+    preferredLanguage: {
+      type: DataTypes.STRING,
+      defaultValue: 'en'
+    },
+    preferredCurrency: {
+      type: DataTypes.STRING,
+      defaultValue: 'USD'
+    },
+    timezone: {
+      type: DataTypes.STRING,
+      defaultValue: 'UTC'
+    },
+    // Push notification token
+    pushToken: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    // Phone number for SMS
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     tableName: 'users',
