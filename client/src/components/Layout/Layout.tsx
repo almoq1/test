@@ -1,254 +1,58 @@
-import React, { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 import {
-  Box,
   AppBar,
   Toolbar,
   Typography,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Avatar,
-  Menu,
-  MenuItem,
-  Divider,
-  useTheme,
-  useMediaQuery
+  Box,
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard,
-  Flight,
-  BookOnline,
-  AccountBalanceWallet,
-  People,
-  Business,
-  AdminPanelSettings,
-  Person,
-  Logout,
-  Notifications,
-  Assessment
-} from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
-import MobileBottomNavigation from '../Mobile/MobileBottomNavigation';
 
-const drawerWidth = 240;
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
 const Layout: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleProfileMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-    handleProfileMenuClose();
-  };
-
-  const getNavigationItems = () => {
-    const baseItems = [
-      { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-      { text: 'Search Flights', icon: <Flight />, path: '/flights/search' },
-      { text: 'My Bookings', icon: <BookOnline />, path: '/bookings' },
-      { text: 'Wallet', icon: <AccountBalanceWallet />, path: '/wallet' },
-    ];
-
-    // Add analytics for admin and company admin
-    if (user?.role === 'admin' || user?.role === 'company_admin') {
-      baseItems.push(
-        { text: 'Analytics', icon: <Assessment />, path: '/analytics' }
-      );
-    }
-
-    // Add enterprise for admin
-    if (user?.role === 'admin') {
-      baseItems.push(
-        { text: 'Enterprise', icon: <Business />, path: '/enterprise' }
-      );
-    }
-
-    // Add agent dashboard for agents
-    if (user?.role === 'agent' || user?.role === 'super_agent') {
-      baseItems.push(
-        { text: 'Agent Dashboard', icon: <Person />, path: '/agent' }
-      );
-    }
-
-    // Add admin items
-    if (user?.role === 'admin') {
-      baseItems.push(
-        { text: 'User Management', icon: <People />, path: '/admin/users' },
-        { text: 'Company Management', icon: <Business />, path: '/admin/companies' },
-        { text: 'Airline Management', icon: <AdminPanelSettings />, path: '/admin/airlines' }
-      );
-    }
-
-    // Add company admin items
-    if (user?.role === 'company_admin') {
-      baseItems.push(
-        { text: 'Company Dashboard', icon: <Business />, path: '/company' },
-        { text: 'Company Bookings', icon: <BookOnline />, path: '/company/bookings' },
-        { text: 'Company Users', icon: <People />, path: '/company/users' }
-      );
-    }
-
-    return baseItems;
-  };
-
-  const navigationItems = getNavigationItems();
-
-  const drawer = (
-    <Box>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          B2B Booking
-        </Typography>
-      </Toolbar>
-      <Divider />
-      <List>
-        {navigationItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => {
-              navigate(item.path);
-              if (isMobile) setMobileOpen(false);
-            }}
-            selected={location.pathname === item.path}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {navigationItems.find(item => item.path === location.pathname)?.text || 'B2B Booking Portal'}
-          </Typography>
-          
-          <IconButton color="inherit">
-            <Notifications />
-          </IconButton>
-          
-          <IconButton
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-            sx={{ ml: 1 }}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>
-              {user?.firstName?.charAt(0)}
-            </Avatar>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      <Box
-        component="nav"
-        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
-      >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              B2B Flight Booking System
+            </Typography>
+            {user && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Typography variant="body2">
+                  Welcome, {user.first_name} {user.last_name}
+                </Typography>
+                <Typography variant="body2" color="inherit">
+                  ({user.role})
+                </Typography>
+              </Box>
+            )}
+          </Toolbar>
+        </AppBar>
+        
+        <Container component="main" sx={{ flexGrow: 1, py: 3 }}>
+          <Outlet />
+        </Container>
       </Box>
-
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          mt: 8,
-          pb: isMobile ? 8 : 3, // Add bottom padding for mobile navigation
-        }}
-      >
-        <Outlet />
-      </Box>
-
-      {/* Mobile Bottom Navigation */}
-      {isMobile && <MobileBottomNavigation />}
-
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleProfileMenuClose}
-        onClick={handleProfileMenuClose}
-      >
-        <MenuItem onClick={() => navigate('/profile')}>
-          <ListItemIcon>
-            <Person fontSize="small" />
-          </ListItemIcon>
-          Profile
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
-    </Box>
+    </ThemeProvider>
   );
 };
 

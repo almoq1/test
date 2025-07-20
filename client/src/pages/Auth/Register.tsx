@@ -1,60 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
-  Box,
+  Container,
   Paper,
   TextField,
   Button,
   Typography,
+  Box,
   Link,
   Alert,
-  CircularProgress,
-  Container,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Grid
 } from '@mui/material';
-import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
-
-interface Company {
-  id: string;
-  name: string;
-}
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
-    companyId: '',
-    role: 'employee'
+    first_name: '',
+    last_name: '',
+    role: 'employee',
   });
-  const [companies, setCompanies] = useState<Company[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [companiesLoading, setCompaniesLoading] = useState(true);
+  
   const { register } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await axios.get('/api/companies');
-        setCompanies(response.data.companies);
-      } catch (error) {
-        console.error('Failed to fetch companies:', error);
-      } finally {
-        setCompaniesLoading(false);
-      }
-    };
-
-    fetchCompanies();
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
     const { name, value } = e.target;
@@ -81,24 +56,18 @@ const Register: React.FC = () => {
     setLoading(true);
 
     try {
-      await register({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        companyId: formData.companyId || undefined,
-        role: formData.role as any
-      });
+      const { confirmPassword, ...registerData } = formData;
+      await register(registerData);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="xs">
       <Box
         sx={{
           marginTop: 8,
@@ -107,121 +76,91 @@ const Register: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <Paper
-          elevation={3}
-          sx={{
-            padding: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <Typography component="h1" variant="h4" gutterBottom>
-            B2B Booking Portal
+        <Paper elevation={3} sx={{ padding: 4, width: '100%' }}>
+          <Typography component="h1" variant="h5" align="center" gutterBottom>
+            Sign Up
           </Typography>
-          <Typography component="h2" variant="h6" color="text.secondary" gutterBottom>
-            Create Account
-          </Typography>
-
+          
           {error && (
-            <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+            <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="firstName"
-                  label="First Name"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="lastName"
-                  label="Last Name"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="email"
-                  label="Email Address"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Company</InputLabel>
-                  <Select
-                    name="companyId"
-                    value={formData.companyId}
-                    label="Company"
-                    onChange={handleChange}
-                    disabled={companiesLoading}
-                  >
-                    <MenuItem value="">
-                      <em>Select a company</em>
-                    </MenuItem>
-                    {companies.map((company) => (
-                      <MenuItem key={company.id} value={company.id}>
-                        {company.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Role</InputLabel>
-                  <Select
-                    name="role"
-                    value={formData.role}
-                    label="Role"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value="employee">Employee</MenuItem>
-                    <MenuItem value="travel_manager">Travel Manager</MenuItem>
-                    <MenuItem value="company_admin">Company Admin</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="first_name"
+              label="First Name"
+              name="first_name"
+              autoComplete="given-name"
+              value={formData.first_name}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="last_name"
+              label="Last Name"
+              name="last_name"
+              autoComplete="family-name"
+              value={formData.last_name}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="role-label">Role</InputLabel>
+              <Select
+                labelId="role-label"
+                id="role"
+                name="role"
+                value={formData.role}
+                label="Role"
+                onChange={handleChange}
+              >
+                <MenuItem value="employee">Employee</MenuItem>
+                <MenuItem value="travel_manager">Travel Manager</MenuItem>
+                <MenuItem value="company_admin">Company Admin</MenuItem>
+                <MenuItem value="agent">Agent</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
             <Button
               type="submit"
               fullWidth
@@ -229,7 +168,7 @@ const Register: React.FC = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : 'Create Account'}
+              {loading ? 'Creating Account...' : 'Sign Up'}
             </Button>
             <Box sx={{ textAlign: 'center' }}>
               <Link component={RouterLink} to="/login" variant="body2">

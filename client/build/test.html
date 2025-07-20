@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B Flight Booking System - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .endpoint {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .error {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛫 B2B Flight Booking System</h1>
+        
+        <div class="status">
+            <h2>System Status</h2>
+            <p><span class="success">✅ Server Running</span> - Port 5000</p>
+            <p><span class="error">⚠️ Client Starting</span> - Port 3000</p>
+        </div>
+
+        <div class="status">
+            <h2>Available Endpoints</h2>
+            <div class="endpoint">GET /health - Health check</div>
+            <div class="endpoint">GET / - API information</div>
+            <div class="endpoint">POST /api/auth/login - User login</div>
+            <div class="endpoint">POST /api/auth/register - User registration</div>
+        </div>
+
+        <div class="status">
+            <h2>Features</h2>
+            <ul>
+                <li>✈️ Flight Booking System</li>
+                <li>👥 Multi-role User Management</li>
+                <li>💰 Wallet & Payment System</li>
+                <li>📊 Analytics & Reporting</li>
+                <li>🤖 AI-powered Automation</li>
+                <li>🏢 Enterprise Features</li>
+                <li>👨‍💼 Agent & Commission System</li>
+            </ul>
+        </div>
+
+        <div class="status">
+            <h2>Test API</h2>
+            <button onclick="testAPI()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Test Server Connection</button>
+            <div id="apiResult" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            try {
+                const response = await fetch('http://localhost:5000/health');
+                const data = await response.json();
+                resultDiv.innerHTML = `<span class="success">✅ Server Response:</span> ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ Error:</span> ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
